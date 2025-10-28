@@ -1,7 +1,6 @@
 import type { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import type { IPaginationParams } from '@/core/repositories/pagination-params'
 import type { IQuestionCommentsRepository } from '@/domain/forum/application/repositories/question-comments-repository'
-import type { Question } from '@/domain/forum/enterprise/entities/question'
 import { QuestionComment } from '@/domain/forum/enterprise/entities/question-comment'
 
 export class InMemoryQuestionCommentsRepository

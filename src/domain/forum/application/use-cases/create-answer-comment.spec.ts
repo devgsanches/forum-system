@@ -3,11 +3,13 @@ import { makeAnswer } from 'test/factories/make-answer'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import type { Student } from '../../enterprise/entities/student'
 import { makeStudent } from 'test/factories/make-student'
-import { InMemoryAnswerCommentsRepository } from 'test/repositories/in-memory-answer-comments'
+import { InMemoryAnswerCommentsRepository } from 'test/repositories/in-memory-answer-comments-repository'
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
 import { CommentAnswerUseCase } from './create-answer-comment'
+import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
 
 describe('Comment Answer UseCase', () => {
+  let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
   let inMemoryAnswerCommentsRepository: InMemoryAnswerCommentsRepository
 
   let author: Student
@@ -26,11 +28,15 @@ describe('Comment Answer UseCase', () => {
       new UniqueEntityId('answer-01')
     )
 
-    new InMemoryAnswersRepository().create(answer)
+    new InMemoryAnswersRepository(inMemoryAnswerAttachmentsRepository).create(
+      answer
+    )
   }
 
   beforeEach(() => {
     inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository()
+    inMemoryAnswerAttachmentsRepository =
+      new InMemoryAnswerAttachmentsRepository()
     sut = new CommentAnswerUseCase(inMemoryAnswerCommentsRepository) // system under test
 
     createNewAnswer()

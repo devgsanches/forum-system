@@ -1,17 +1,17 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import type { Answer } from '../../enterprise/entities/answer'
 import type { IAnswersRepository } from '../repositories/answers-repository'
-import { right, type Either } from '@/core/either'
+import { left, right, type Either } from '@/core/either'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { NotAllowedError } from './errors/not-allowed-error'
 
 interface DeleteAnswerUseCaseRequest {
   id: UniqueEntityId
+  authorId: UniqueEntityId
 }
 
 type DeleteAnswerUseCaseResponse = Either<
-  undefined,
-  {
-    answers: Answer[]
-  }
+  ResourceNotFoundError | NotAllowedError,
+  {}
 >
 
 export class DeleteAnswerUseCase {
@@ -19,9 +19,20 @@ export class DeleteAnswerUseCase {
 
   async execute({
     id,
+    authorId,
   }: DeleteAnswerUseCaseRequest): Promise<DeleteAnswerUseCaseResponse> {
-    const answers = await this.answersRepository.delete(id)
+    const answer = await this.answersRepository.findById(id)
 
-    return right({ answers })
+    if (!answer) {
+      return left(new ResourceNotFoundError())
+    }
+
+    if (answer.authorId !== authorId) {
+      return left(new NotAllowedError())
+    }
+
+    await this.answersRepository.delete(id)
+
+    return right({})
   }
 }

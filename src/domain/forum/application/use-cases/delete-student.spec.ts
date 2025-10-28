@@ -1,4 +1,4 @@
-import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository-repository'
 import { Student } from '../../enterprise/entities/student'
 import { DeleteStudentUseCase } from './delete-student'
 import { makeStudent } from 'test/factories/make-student'

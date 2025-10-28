@@ -2,9 +2,14 @@ import type { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import type { IPaginationParams } from '@/core/repositories/pagination-params'
 import type { IQuestionsRepository } from '@/domain/forum/application/repositories/questions-repository'
 import type { Question } from '@/domain/forum/enterprise/entities/question'
+import type { InMemoryQuestionAttachmentsRepository } from './in-memory-question-attachments-repository'
 
 export class InMemoryQuestionsRepository implements IQuestionsRepository {
   public items: Question[] = []
+
+  constructor(
+    private questionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
+  ) {}
 
   async create(question: Question) {
     this.items.push(question)
@@ -35,7 +40,7 @@ export class InMemoryQuestionsRepository implements IQuestionsRepository {
   }
 
   async findById(id: UniqueEntityId) {
-    const question = this.items.find(item => item.id === id)
+    const question = this.items.find(item => item.id.toString() === id.toString())
 
     if (!question) {
       return null
@@ -54,7 +59,8 @@ export class InMemoryQuestionsRepository implements IQuestionsRepository {
   }
 
   async delete(id: UniqueEntityId) {
-    const items = this.items.filter(item => item.id !== id)
+    await this.questionAttachmentsRepository.deleteManyByQuestionId(id)
+    const items = this.items.filter(item => item.id.toString() !== id.toString())
 
     this.items = items
 

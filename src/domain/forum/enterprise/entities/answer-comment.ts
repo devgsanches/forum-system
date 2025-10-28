@@ -17,13 +17,13 @@ export class AnswerComment extends Comment<AnswerCommentProps> {
     props: Optional<AnswerCommentProps, 'createdAt'>,
     id?: UniqueEntityId
   ) {
-    const answerComment = new AnswerComment({
-      props: {
+    const answerComment = new AnswerComment(
+      {
         ...props,
         createdAt: props.createdAt ?? new Date(),
       },
-      id,
-    })
+      id
+    )
 
     return answerComment
   }

@@ -1,17 +1,24 @@
 import { makeQuestion } from 'test/factories/make-question'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-question-comments'
+import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-question-comments-repository'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
 import { CommentQuestionUseCase } from './create-question-comment'
+import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
 
 describe('Comment Question UseCase', () => {
+  let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
   let inMemoryQuestionsRepository: InMemoryQuestionsRepository
   let inMemoryQuestionCommentsRepository: InMemoryQuestionCommentsRepository
 
   let sut: CommentQuestionUseCase
 
   beforeEach(() => {
-    inMemoryQuestionsRepository = new InMemoryQuestionsRepository()
+    inMemoryQuestionAttachmentsRepository =
+      new InMemoryQuestionAttachmentsRepository()
+    inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
+      inMemoryQuestionAttachmentsRepository
+    )
+
     inMemoryQuestionCommentsRepository =
       new InMemoryQuestionCommentsRepository()
 

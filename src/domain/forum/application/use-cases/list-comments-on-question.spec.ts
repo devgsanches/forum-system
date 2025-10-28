@@ -1,5 +1,5 @@
 import { makeQuestion } from 'test/factories/make-question'
-import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-question-comments'
+import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-question-comments-repository'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
 import { makeQuestionComment } from 'test/factories/make-question-comment'
 import { ListCommentsOnQuestionUseCase } from './list-comments-on-question'
@@ -24,7 +24,8 @@ describe('List Comments On Question UseCase', () => {
   }
 
   beforeEach(async () => {
-    inMemoryQuestionCommentsRepository = new InMemoryQuestionCommentsRepository()
+    inMemoryQuestionCommentsRepository =
+      new InMemoryQuestionCommentsRepository()
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository()
 
     await inMemoryQuestionsRepository.create(question)

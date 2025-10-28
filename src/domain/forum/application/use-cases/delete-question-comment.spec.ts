@@ -1,5 +1,5 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-question-comments'
+import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-question-comments-repository'
 import { makeQuestionComment } from 'test/factories/make-question-comment'
 import { DeleteQuestionCommentUseCase } from './delete-question-comment'
 import type { QuestionComment } from '../../enterprise/entities/question-comment'
@@ -19,7 +19,8 @@ describe('Delete Question Comment UseCase', () => {
   )
 
   beforeEach(() => {
-    inMemoryQuestionCommentsRepository = new InMemoryQuestionCommentsRepository()
+    inMemoryQuestionCommentsRepository =
+      new InMemoryQuestionCommentsRepository()
     sut = new DeleteQuestionCommentUseCase(inMemoryQuestionCommentsRepository) // system under test
   })
 

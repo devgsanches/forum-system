@@ -9,5 +9,5 @@ export interface IAnswersRepository {
     params: IPaginationParams
   ): Promise<Answer[]>
   create(answer: Answer): Promise<void>
-  delete(id: UniqueEntityId): Promise<Answer[]>
+  delete(id: UniqueEntityId): Promise<void>
 }

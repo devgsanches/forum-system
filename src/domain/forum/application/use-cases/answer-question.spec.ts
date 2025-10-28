@@ -1,13 +1,19 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { AnswerQuestionUseCase } from './answer-question'
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
+import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
 
 describe('Answer Question UseCase', () => {
+  let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
   let inMemoryAnswersRepository: InMemoryAnswersRepository
   let sut: AnswerQuestionUseCase
 
   beforeEach(() => {
-    inMemoryAnswersRepository = new InMemoryAnswersRepository()
+    inMemoryAnswerAttachmentsRepository =
+      new InMemoryAnswerAttachmentsRepository()
+    inMemoryAnswersRepository = new InMemoryAnswersRepository(
+      inMemoryAnswerAttachmentsRepository
+    )
     sut = new AnswerQuestionUseCase(inMemoryAnswersRepository) // system under test
   })
 
@@ -16,6 +22,11 @@ describe('Answer Question UseCase', () => {
       authorId: new UniqueEntityId('1'),
       questionId: new UniqueEntityId('2'),
       content: 'New answer',
+      attachmentsIds: [
+        new UniqueEntityId(),
+        new UniqueEntityId(),
+        new UniqueEntityId(),
+      ],
     })
 
     if (response.isRight()) {
@@ -29,6 +40,18 @@ describe('Answer Question UseCase', () => {
           content: 'New answer',
         })
       )
+      expect(answer.attachments.currentItems).toHaveLength(3)
+      // expect(answer.attachments).toEqual([
+      //   expect.objectContaining({
+      //     attachmentId: new UniqueEntityId('1'),
+      //   }),
+      //   expect.objectContaining({
+      //     attachmentId: new UniqueEntityId('2'),
+      //   }),
+      //   expect.objectContaining({
+      //     attachmentId: new UniqueEntityId('3'),
+      //   }),
+      // ])
     }
   })
 })

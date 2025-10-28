@@ -1,5 +1,5 @@
 import { CreateStudentUseCase } from './create-student'
-import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository-repository'
 
 describe('Create Student UseCase', () => {
   let inMemoryStudentsRepository: InMemoryStudentsRepository
@@ -18,10 +18,12 @@ describe('Create Student UseCase', () => {
     if (response.isRight()) {
       const { student } = response.result
 
-      expect(student).toMatchObject(expect.objectContaining({
-        id: student.id,
-        name: 'John',
-      }))
+      expect(student).toMatchObject(
+        expect.objectContaining({
+          id: student.id,
+          name: 'John',
+        })
+      )
     }
   })
 })

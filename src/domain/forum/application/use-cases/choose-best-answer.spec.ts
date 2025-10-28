@@ -1,26 +1,40 @@
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
-import { AnswerQuestionUseCase } from './answer-question'
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
 import { ChooseBestAnswerUseCase } from './choose-best-answer'
 import type { Question } from '../../enterprise/entities/question'
 import type { Answer } from '../../enterprise/entities/answer'
 import { makeQuestion } from 'test/factories/make-question'
 import { makeAnswer } from 'test/factories/make-answer'
-import type { Student } from '../../enterprise/entities/student'
-import { makeStudent } from 'test/factories/make-student'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from './errors/not-allowed-error'
+import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
+import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
 
 describe('Choose Best Answer UseCase', () => {
+  let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
   let inMemoryQuestionsRepository: InMemoryQuestionsRepository
+
+  let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
   let inMemoryAnswersRepository: InMemoryAnswersRepository
+
   let question: Question
   let answer: Answer
   let sut: ChooseBestAnswerUseCase
 
   beforeEach(async () => {
-    inMemoryQuestionsRepository = new InMemoryQuestionsRepository()
-    inMemoryAnswersRepository = new InMemoryAnswersRepository()
+    inMemoryQuestionAttachmentsRepository =
+      new InMemoryQuestionAttachmentsRepository()
+
+    inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
+      inMemoryQuestionAttachmentsRepository
+    )
+
+    inMemoryAnswerAttachmentsRepository =
+      new InMemoryAnswerAttachmentsRepository()
+    inMemoryAnswersRepository = new InMemoryAnswersRepository(
+      inMemoryAnswerAttachmentsRepository
+    )
+
     sut = new ChooseBestAnswerUseCase(
       inMemoryQuestionsRepository,
       inMemoryAnswersRepository
