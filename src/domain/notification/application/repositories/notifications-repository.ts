@@ -3,5 +3,6 @@ import type { Notification } from '@/domain/notification/enterprise/entities/not
 
 export interface INotificationsRepository {
   create(notification: Notification): Promise<void>
+  save(notification: Notification): Promise<void>
   findById(id: UniqueEntityId): Promise<Notification | null>
 }
