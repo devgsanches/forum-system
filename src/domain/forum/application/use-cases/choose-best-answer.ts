@@ -4,8 +4,8 @@ import type { IAnswersRepository } from '../repositories/answers-repository'
 import type { Question } from '../../enterprise/entities/question'
 import type { IQuestionsRepository } from '../repositories/questions-repository'
 import { left, right, type Either } from '@/core/either'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
-import { NotAllowedError } from './errors/not-allowed-error'
+import { ResourceNotFoundError } from '../../../../core/errors/errors/resource-not-found-error'
+import { NotAllowedError } from '../../../../core/errors/errors/not-allowed-error'
 
 interface ChooseBestAnswerUseCaseRequest {
   studentId: UniqueEntityId

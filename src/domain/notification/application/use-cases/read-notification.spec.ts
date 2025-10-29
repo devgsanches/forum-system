@@ -3,6 +3,7 @@ import { ReadNotificationUseCase } from './read-notification'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { makeNotification } from 'test/factories/make-notification'
 import type { Notification } from '../../enterprise/entities/notification'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
 describe('Read Notification UseCase', () => {
   let inMemoryNotificationsRepository: InMemoryNotificationsRepository
@@ -14,7 +15,7 @@ describe('Read Notification UseCase', () => {
 
     inMemoryNotificationsRepository.create(
       makeNotification({
-        recipientId: new UniqueEntityId('1'),
+        recipientId: new UniqueEntityId('recipient-01'),
       })
     )
 
@@ -26,7 +27,7 @@ describe('Read Notification UseCase', () => {
   it('should be able to read a notification', async () => {
     const response = await sut.execute({
       notificationId: notification.id,
-      userId: notification.recipientId,
+      recipientId: notification.recipientId,
     })
 
     expect(response.isRight()).toBe(true)
@@ -36,6 +37,19 @@ describe('Read Notification UseCase', () => {
       const { notification } = response.result
 
       expect(notification.readAt).toEqual(expect.any(Date))
+    }
+  })
+
+  it('should not be able to read a notification from another user', async () => {
+    const response = await sut.execute({
+      notificationId: notification.id,
+      recipientId: new UniqueEntityId('recipient-02'),
+    })
+
+    expect(response.isLeft()).toBe(true)
+
+    if (response.isLeft()) {
+      expect(response.reason).toBeInstanceOf(NotAllowedError)
     }
   })
 })

@@ -3,7 +3,7 @@ import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { AnswerComment } from '../../enterprise/entities/answer-comment'
 import type { IAnswersRepository } from '../repositories/answers-repository'
 import { left, right, type Either } from '@/core/either'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { ResourceNotFoundError } from '../../../../core/errors/errors/resource-not-found-error'
 import type { IAnswerCommentsRepository } from '../repositories/answer-comments-repository'
 
 interface ListCommentsOnAnswerUseCaseRequest {

@@ -45,8 +45,8 @@ export class Notification extends Entity<NotificationProps> {
   Então, crio um setter (método) que altera o updatedAt daquela resposta com a data atual.
   */
 
-  set readAt(readAt: Date) {
-    this.props.readAt = readAt
+  read() {
+    this.props.readAt = new Date()
   }
 
   static create(

@@ -3,7 +3,7 @@ import { InMemoryAnswerCommentsRepository } from 'test/repositories/in-memory-an
 import { makeAnswerComment } from 'test/factories/make-answer-comment'
 import { DeleteAnswerCommentUseCase } from './delete-answer-comment'
 import type { AnswerComment } from '../../enterprise/entities/answer-comment'
-import { NotAllowedError } from './errors/not-allowed-error'
+import { NotAllowedError } from '../../../../core/errors/errors/not-allowed-error'
 
 describe('Delete Answer Comment UseCase', () => {
   let inMemoryAnswerCommentsRepository: InMemoryAnswerCommentsRepository

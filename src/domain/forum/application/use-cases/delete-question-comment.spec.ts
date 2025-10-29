@@ -3,7 +3,7 @@ import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-
 import { makeQuestionComment } from 'test/factories/make-question-comment'
 import { DeleteQuestionCommentUseCase } from './delete-question-comment'
 import type { QuestionComment } from '../../enterprise/entities/question-comment'
-import { NotAllowedError } from './errors/not-allowed-error'
+import { NotAllowedError } from '../../../../core/errors/errors/not-allowed-error'
 
 describe('Delete Question Comment UseCase', () => {
   let inMemoryQuestionCommentsRepository: InMemoryQuestionCommentsRepository
