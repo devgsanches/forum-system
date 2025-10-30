@@ -1,8 +1,8 @@
-import { Entity } from '@/core/entities/entity'
 import type { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import type { Optional } from '@/core/types/optional'
-import type { AnswerAttachment } from './answer-attachment'
 import { AnswerAttachmentList } from './answer-attachment-list'
+import { AggregateRoot } from '@/core/entities/aggregate-root'
+import { AnswerCreatedEvent } from '../events/answer-created-event'
 
 export interface AnswerProps {
   content: string
@@ -13,7 +13,7 @@ export interface AnswerProps {
   updatedAt?: Date
 }
 
-export class Answer extends Entity<AnswerProps> {
+export class Answer extends AggregateRoot<AnswerProps> {
   // getters em todas as props, para termos acesso aos valores. (apenas leitura)
   get content(): string {
     return this.props.content
@@ -77,6 +77,12 @@ export class Answer extends Entity<AnswerProps> {
       },
       id
     )
+    const isNewAnswer = !id
+
+    // garanto que é uma *nova* Answer
+    if (isNewAnswer) {
+      answer.addDomainEvent(new AnswerCreatedEvent(answer))
+    }
 
     return answer
   }

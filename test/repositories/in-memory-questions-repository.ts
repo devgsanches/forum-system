@@ -40,7 +40,9 @@ export class InMemoryQuestionsRepository implements IQuestionsRepository {
   }
 
   async findById(id: UniqueEntityId) {
-    const question = this.items.find(item => item.id.toString() === id.toString())
+    const question = this.items.find(
+      item => item.id.toString() === id.toString()
+    )
 
     if (!question) {
       return null
@@ -60,7 +62,9 @@ export class InMemoryQuestionsRepository implements IQuestionsRepository {
 
   async delete(id: UniqueEntityId) {
     await this.questionAttachmentsRepository.deleteManyByQuestionId(id)
-    const items = this.items.filter(item => item.id.toString() !== id.toString())
+    const items = this.items.filter(
+      item => item.id.toString() !== id.toString()
+    )
 
     this.items = items
 

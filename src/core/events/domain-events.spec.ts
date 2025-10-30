@@ -13,7 +13,7 @@ class CustomAggregateCreated implements DomainEvent {
     this.ocurredAt = new Date()
   }
 
-  public getAggregateId(): UniqueEntityId {
+  getAggregateId(): UniqueEntityId {
     return this.aggregate.id
   }
 }

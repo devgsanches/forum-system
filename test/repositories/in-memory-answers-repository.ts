@@ -3,6 +3,7 @@ import type { IPaginationParams } from '@/core/repositories/pagination-params'
 import type { IAnswersRepository } from '@/domain/forum/application/repositories/answers-repository'
 import type { Answer } from '@/domain/forum/enterprise/entities/answer'
 import type { InMemoryAnswerAttachmentsRepository } from './in-memory-answer-attachments-repository'
+import { DomainEvents } from '@/core/events/domain-events'
 
 export class InMemoryAnswersRepository implements IAnswersRepository {
   public items: Answer[] = []
@@ -13,6 +14,8 @@ export class InMemoryAnswersRepository implements IAnswersRepository {
 
   async create(answer: Answer) {
     this.items.push(answer)
+
+    DomainEvents.dispatchEventsForAggregate(answer.id)
   }
 
   async findManyByQuestionId(
