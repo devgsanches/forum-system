@@ -3,6 +3,7 @@ import type { IPaginationParams } from '@/core/repositories/pagination-params'
 import type { IQuestionsRepository } from '@/domain/forum/application/repositories/questions-repository'
 import type { Question } from '@/domain/forum/enterprise/entities/question'
 import type { InMemoryQuestionAttachmentsRepository } from './in-memory-question-attachments-repository'
+import { DomainEvents } from '@/core/events/domain-events'
 
 export class InMemoryQuestionsRepository implements IQuestionsRepository {
   public items: Question[] = []
@@ -13,6 +14,18 @@ export class InMemoryQuestionsRepository implements IQuestionsRepository {
 
   async create(question: Question) {
     this.items.push(question)
+  }
+
+  async save(question: Question) {
+    const questionIndex = this.items.findIndex(item =>
+      item.id.equals(question.id)
+    )
+
+    if (questionIndex >= 0) {
+      this.items[questionIndex] = question
+    }
+
+    DomainEvents.dispatchEventsForAggregate(question.id)
   }
 
   async findManyByCompleted({ page }: IPaginationParams) {

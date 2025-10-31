@@ -43,7 +43,7 @@ export class Answer extends AggregateRoot<AnswerProps> {
   // é como se criássemos uma propriedade virtual, que não existe na interface, mas que podemos acessar.
 
   get excerpt(): string {
-    return this.content.substring(0, 120).trimEnd().concat('...')
+    return this.content.substring(0, 120).trimEnd().concat('..')
   } // resumo da resposta
 
   /* para os setters, crio SOMENTE para as props que fazem sentido serem alteradas. Aqui neste caso, é somente o content.

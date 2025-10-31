@@ -1,6 +1,7 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import type { Optional } from '@/core/types/optional'
 import { Comment, type CommentProps } from './comment'
+import { AnswerCommentCreatedEvent } from '../events/answer-comment-created-event'
 
 export interface AnswerCommentProps extends CommentProps {
   answerId: UniqueEntityId
@@ -11,6 +12,10 @@ export class AnswerComment extends Comment<AnswerCommentProps> {
 
   get answerId(): UniqueEntityId {
     return this.props.answerId
+  }
+
+  get excerpt(): string {
+    return this.content.substring(0, 60).trimEnd().concat('..')
   }
 
   static create(
@@ -24,6 +29,12 @@ export class AnswerComment extends Comment<AnswerCommentProps> {
       },
       id
     )
+
+    const isNew = !id
+
+    if (isNew) {
+      answerComment.addDomainEvent(new AnswerCommentCreatedEvent(answerComment))
+    }
 
     return answerComment
   }

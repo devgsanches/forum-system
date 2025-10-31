@@ -1,4 +1,5 @@
 import type { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { DomainEvents } from '@/core/events/domain-events'
 import type { IPaginationParams } from '@/core/repositories/pagination-params'
 import type { IAnswerCommentsRepository } from '@/domain/forum/application/repositories/answer-comments-repository'
 import type { Answer } from '@/domain/forum/enterprise/entities/answer'
@@ -11,6 +12,8 @@ export class InMemoryAnswerCommentsRepository
 
   async create(answerComment: AnswerComment) {
     this.items.push(answerComment)
+
+    DomainEvents.dispatchEventsForAggregate(answerComment.id)
   }
 
   async findManyByAnswerId(

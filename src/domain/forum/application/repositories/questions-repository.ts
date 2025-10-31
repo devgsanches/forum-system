@@ -9,5 +9,6 @@ export interface IQuestionsRepository {
   findManyByNotCompleted(params: IPaginationParams): Promise<Question[]>
   findManyRecent(params: IPaginationParams): Promise<Question[]>
   create(question: Question): Promise<void>
+  save(question: Question): Promise<void>
   delete(id: UniqueEntityId): Promise<Question[]>
 }

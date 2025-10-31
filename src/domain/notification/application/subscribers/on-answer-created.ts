@@ -12,7 +12,7 @@ export class OnAnswerCreated implements EventHandler {
     this.setupSubscriptions()
   }
 
-  // cria o subscriber > setupSubscriptions
+  // cria/registra o subscriber > setupSubscriptions
   setupSubscriptions(): void {
     DomainEvents.register(
       this.sendNewAnswerNotification.bind(this), // bind(this) para garantir que essa função será chamada com o contexto correto | o this aqui é essa classe | OnAnswerCreated

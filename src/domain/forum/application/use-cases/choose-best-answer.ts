@@ -49,6 +49,8 @@ export class ChooseBestAnswerUseCase {
     // set
     question.bestAnswerId = answer.id
 
+    await this.questionsRepository.save(question)
+
     return right({
       question,
     })
